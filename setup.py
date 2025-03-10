@@ -5,14 +5,24 @@ import os
 
 #--------------------------------------------------------------------------------------------------------------
 
-here = os.path.abspath(os.path.dirname(__file__))
+def get_about_data():
+    """Retrieve metadata about the package from the version file."""
+    here = os.path.abspath(os.path.dirname(__file__))
+    version_file_path = os.path.join(here, 'amazoncaptcha', '__version__.py')
 
-with open(os.path.join(here, 'amazoncaptcha', '__version__.py'), 'r', encoding='utf-8') as f:
-    file_data = [i.replace('\n', '').replace('\'', '').split(' = ') for i in f.readlines()]
-    about = {k: v for k, v in file_data}
+    if not os.path.exists(version_file_path):
+        raise FileNotFoundError(f"Version file not found: {version_file_path}")
 
-def readme(logo_end_line=14):
+    with open(version_file_path, 'r', encoding='utf-8') as f:
+        file_data = [line.strip().replace('\'', '').split(' = ') for line in f.readlines()]
+        about = {key: value for key, value in file_data}
+
+    return about
+
+def read_readme(logo_end_line=14):
     """Extracts the logo from README file before pushing to PyPi."""
+    if not os.path.exists('README.md'):
+        raise FileNotFoundError("README.md file not found")
 
     with open('README.md', 'r', encoding='utf-8') as fh:
         long_description = ''.join(fh.readlines()[logo_end_line:])
@@ -20,10 +30,13 @@ def readme(logo_end_line=14):
     return long_description
 
 classifiers = [
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
@@ -34,9 +47,11 @@ classifiers = [
 ]
 
 requires = [
-    "pillow >= 9.0.1,< 9.6.0",
-    "requests >= 2.27.1,< 2.31.0"
+    "pillow >= 9.0.1,< 12.0",
+    "requests ~= 2.27.1"
 ]
+
+about = get_about_data()
 
 #--------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +64,7 @@ setuptools.setup(
     include_package_data=True,
     package_data={'': ['*.json'], 'amazoncaptcha': ['training_data/*.*']},
     classifiers=classifiers,
-    long_description=readme(),
+    long_description=read_readme(),
     long_description_content_type="text/markdown",
     install_requires=requires,
     author=about['__author__'],
