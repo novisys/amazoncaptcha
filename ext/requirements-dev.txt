@@ -1,6 +1,6 @@
-pillow ~= 9.5.0
-requests ~= 2.30.0
-coverage >= 6.3.1
-codecov >= 2.1.12
-webdriver_manager ~= 3.8.6
-selenium ~= 4.9.1
+pillow ~= 10.0.0  # Mise à jour vers la dernière version stable
+requests ~= 2.31.0  # Mise à jour vers la dernière version stable
+coverage >= 7.3.0  # Mise à jour vers la dernière version stable
+codecov >= 2.1.13  # Mise à jour vers la dernière version stable
+webdriver_manager ~= 4.0.0  # Mise à jour vers la dernière version stable
+selenium ~= 4.11.2  # Mise à jour vers la dernière version stable
