@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.2.4
+  browser-tools: circleci/browser-tools@1.5.2
 
 shared: &shared
   steps:
@@ -26,16 +26,6 @@ shared: &shared
         fi
 
 jobs:
-  py37:
-    <<: *shared
-    docker:
-      - image: circleci/python:3.7
-
-  py38:
-    <<: *shared
-    docker:
-      - image: circleci/python:3.8
-
   py39:
     <<: *shared
     docker:
@@ -45,6 +35,21 @@ jobs:
     <<: *shared
     docker:
       - image: circleci/python:3.10
+
+  py311:
+    <<: *shared
+    docker:
+      - image: circleci/python:3.11
+
+  py312:
+    <<: *shared
+    docker:
+      - image: circleci/python:3.11
+
+  py313:
+    <<: *shared
+    docker:
+      - image: circleci/python:3.13
         environment:
           UPLOAD_COV: "true"
 
@@ -52,7 +57,8 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - py37
-      - py38
       - py39
       - py310
+      - py311
+      - py312
+      - py313
