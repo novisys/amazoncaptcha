@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.5.2
+  browser-tools: circleci/browser-tools@1.5.2  # Vérifiez si une version plus récente est disponible
 
 shared: &shared
   steps:
@@ -9,19 +9,20 @@ shared: &shared
     - run:
         name: Install Chromedriver latest version
         command: |
-          sudo apt-get install xvfb
+          sudo apt-get update
+          sudo apt-get install -y xvfb
     - browser-tools/install-chrome
     - run:
         name: Install Python deps in a venv
         command: |
           sudo pip install --upgrade pip
-          pip install -r ext/requirements-dev.txt
+          pip install --upgrade -r ext/requirements-dev.txt  # Ajout de --upgrade pour s'assurer que les dépendances sont à jour
     - run:
         name: Running tests
         command: |
           coverage run -m unittest tests/test_main.py
     - run: |
-        if [ $UPLOAD_COV ]; then
+        if [ "$UPLOAD_COV" = "true" ]; then
           codecov
         fi
 
@@ -29,27 +30,27 @@ jobs:
   py39:
     <<: *shared
     docker:
-      - image: circleci/python:3.9
+      - image: circleci/python:3.9  # Vérifiez si une version plus récente est disponible
 
   py310:
     <<: *shared
     docker:
-      - image: circleci/python:3.10
+      - image: circleci/python:3.10  # Vérifiez si une version plus récente est disponible
 
   py311:
     <<: *shared
     docker:
-      - image: circleci/python:3.11
+      - image: circleci/python:3.11  # Vérifiez si une version plus récente est disponible
 
   py312:
     <<: *shared
     docker:
-      - image: circleci/python:3.11
+      - image: circleci/python:3.12  # Vérifiez si une version plus récente est disponible
 
   py313:
     <<: *shared
     docker:
-      - image: circleci/python:3.13
+      - image: circleci/python:3.13  # Vérifiez si une version plus récente est disponible
         environment:
           UPLOAD_COV: "true"
 
